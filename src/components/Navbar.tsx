@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, Phone } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logoGold from '../assets/logo_gold.png';
-import letterAGold from '../assets/letter_A_gold.png';
+import ayshEvermoreCharcoal from '../assets/aysh_evermore_charcoal.png';
 
 interface NavbarProps {
   onOpenBooking: () => void;
@@ -17,7 +17,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
+      if (window.scrollY > 20) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
@@ -68,29 +68,18 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
           <Link
             to="/"
             onClick={() => handleNavLinkClick('/')}
-            className="flex items-center space-x-4 group mr-6 lg:mr-16 shrink-0"
+            className="flex items-center space-x-3.5 group mr-6 lg:mr-16 shrink-0"
           >
             <img
               src={logoGold}
               alt="Aysh Evermore Logo"
-              className="w-14 h-14 md:w-16 md:h-16 object-contain transition-transform duration-500 group-hover:scale-105"
+              className="w-13 h-13 md:w-15 md:h-15 object-contain transition-transform duration-500 group-hover:scale-105"
             />
-            <div className="flex flex-col justify-center">
-              <div className="flex items-center">
-                <img
-                  src={letterAGold}
-                  alt="A"
-                  className="h-[1.4em] md:h-[1.6em] w-auto inline-block object-contain -mr-1.5 -ml-1 align-baseline select-none"
-                  style={{ transform: 'translateY(-1%)' }}
-                />
-                <span className="font-serif text-base md:text-lg font-bold tracking-[0.25em] text-luxury-charcoal uppercase leading-none mt-1 group-hover:text-luxury-gold transition-colors">
-                  ysh
-                </span>
-              </div>
-              <span className="font-serif text-[11px] md:text-xs tracking-[0.3em] text-luxury-gold uppercase leading-none mt-1 font-medium">
-                Evermore
-              </span>
-            </div>
+            <img
+              src={ayshEvermoreCharcoal}
+              alt="Aysh Evermore"
+              className="h-6.5 md:h-8 w-auto object-contain transition-opacity duration-300 group-hover:opacity-85 mt-0.5"
+            />
           </Link>
 
           {/* Desktop Navigation Links - Elegant, Serif-based, legible */}

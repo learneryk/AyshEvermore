@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Heart, Sparkles, Award, Compass, ShieldCheck, Mail, Phone, MapPin, Calendar } from 'lucide-react';
 import { SectionHeader } from '../components/SectionHeader';
 import { servicesData } from '../data/services';
-import letterAGold from '../assets/letter_A_gold.png';
+import ayshEvermoreCharcoal from '../assets/aysh_evermore_charcoal.png';
 import proposalHero from '../assets/proposal_hero.jpg';
 import weddingGold from '../assets/wedding_gold.jpg';
 import birthdayLuxury from '../assets/birthday_luxury.jpg';
@@ -79,18 +79,13 @@ export const Home: React.FC<HomeProps> = ({ onOpenBooking }) => {
               initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.2, delay: 0.2 }}
-              className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold tracking-[0.18em] text-luxury-charcoal uppercase leading-[1.1]"
+              className="select-text"
             >
-              <span className="flex items-center flex-wrap select-text">
-                <img
-                  src={letterAGold}
-                  alt="A"
-                  className="h-[1.35em] w-auto inline-block object-contain -mr-4 md:-mr-6 lg:-mr-8 -ml-1 md:-ml-2 select-none"
-                  style={{ transform: 'translateY(-2.5%)' }}
-                />
-                <span>ysh</span>
-                <span className="text-luxury-gold ml-2 md:ml-4">Evermore</span>
-              </span>
+              <img
+                src={ayshEvermoreCharcoal}
+                alt="Aysh Evermore"
+                className="h-16 sm:h-20 md:h-[92px] lg:h-[105px] w-auto object-contain select-none"
+              />
             </motion.h1>
 
             <motion.div
