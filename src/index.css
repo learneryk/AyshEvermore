@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+@theme {
+  --color-luxury-cream: #FDFBF7;       /* Ivory background */
+  --color-luxury-warm: #F5EFEB;        /* secondary bg */
+  --color-luxury-accent: #EFE6DD;      /* borders, light accents */
+  --color-luxury-gold: #C5A880;        /* primary gold */
+  --color-luxury-goldLight: #D4AF37;   /* hover gold */
+  --color-luxury-goldDark: #A3845B;    /* deep gold */
+  --color-luxury-charcoal: #111111;    /* text color */
+  --color-luxury-dark: #1A1A1A;        /* dark sections (footer) */
+
+  --font-serif: "Cormorant Garamond", serif;
+  --font-sans: "Manrope", "Inter", sans-serif;
+
+  --tracking-widest: 0.2em;
+  --tracking-extraWide: 0.3em;
+
+  --shadow-luxury: 0 10px 35px -10px rgba(197, 168, 128, 0.15);
+  --shadow-glass: 0 8px 32px 0 rgba(197, 168, 128, 0.08);
+}
+
+@layer base {
+  body {
+    @apply bg-luxury-cream text-luxury-charcoal font-sans text-[18px] leading-[1.7] antialiased;
+    background-image: 
+      radial-gradient(rgba(197, 168, 128, 0.03) 1px, transparent 1px),
+      radial-gradient(rgba(197, 168, 128, 0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-position: 0 0, 20px 20px;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif uppercase tracking-widest;
+  }
+
+  h1 {
+    @apply text-5xl md:text-7xl font-bold leading-tight tracking-[0.2em];
+  }
+
+  h2 {
+    @apply text-3xl md:text-5xl font-light leading-snug tracking-[0.18em];
+  }
+
+  h3 {
+    @apply text-xl md:text-3xl font-light leading-normal tracking-[0.12em];
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-luxury-cream;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-luxury-gold/40 rounded-full hover:bg-luxury-gold;
+}
+
+/* Custom Glassmorphism Component */
+.glass-panel {
+  @apply bg-white/75 backdrop-blur-md border border-luxury-gold/15;
+  box-shadow: var(--shadow-glass);
+}
+
+.glass-panel-dark {
+  @apply bg-[#1A1A1A]/85 backdrop-blur-md border border-white/10 shadow-xl;
+}
+
+/* Custom Gold Gradient Text */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #A3845B 0%, #D4AF37 50%, #C5A880 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Custom Gold Outline Border */
+.border-gold-double {
+  border: 4px double #C5A880;
+}
+
+/* Elegant Hover Effects */
+.btn-luxury {
+  @apply relative overflow-hidden transition-all duration-500 uppercase tracking-widest font-serif text-[11px] px-8 py-3.5 border border-luxury-gold font-bold;
+}
+
+.btn-luxury::after {
+  content: '';
+  @apply absolute inset-0 bg-luxury-gold transition-transform duration-500 origin-bottom scale-y-0 -z-10;
+}
+
+.btn-luxury:hover::after {
+  @apply scale-y-100;
+}
+
+/* Parallax Overlay Styling */
+.parallax-bg {
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Custom Leaf/Scroll Decorators */
+.luxury-flourish {
+  @apply w-12 h-[1px] bg-luxury-gold my-4 relative;
+}
+
+.luxury-flourish::before {
+  content: '♦';
+  @apply absolute -top-1.5 left-1/2 -translate-x-1/2 text-[8px] text-luxury-gold bg-luxury-cream px-1;
+}
+
+.luxury-flourish-dark::before {
+  content: '♦';
+  @apply absolute -top-1.5 left-1/2 -translate-x-1/2 text-[8px] text-luxury-gold bg-luxury-dark px-1;
+}
