@@ -117,3 +117,16 @@
   content: '♦';
   @apply absolute -top-1.5 left-1/2 -translate-x-1/2 text-[8px] text-luxury-gold bg-luxury-dark px-1;
 }
+
+/* Calligraphic flourishing brand A styling */
+.brand-A {
+  font-family: 'Pinyon Script', cursive;
+  text-transform: none !important;
+  font-weight: 400 !important;
+  display: inline-block;
+  font-size: 1.35em;
+  line-height: 0.8;
+  vertical-align: -0.08em;
+  margin-right: -0.05em;
+  margin-left: -0.02em;
+}

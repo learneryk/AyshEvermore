@@ -23,7 +23,9 @@ export const Footer: React.FC = () => {
               className="w-12 h-12 object-contain"
             />
             <div className="flex flex-col">
-              <span className="font-serif text-sm font-bold tracking-[0.25em] text-white uppercase leading-none">Aysh</span>
+              <span className="font-serif text-sm font-bold tracking-[0.25em] text-white uppercase leading-none">
+                <span className="brand-A text-luxury-gold">A</span>ysh
+              </span>
               <span className="font-serif text-[10px] tracking-[0.3em] text-luxury-gold uppercase leading-none mt-1">Evermore</span>
             </div>
           </div>

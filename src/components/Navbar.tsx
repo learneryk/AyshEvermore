@@ -76,7 +76,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
             />
             <div className="flex flex-col">
               <span className="font-serif text-base md:text-lg font-bold tracking-[0.25em] text-luxury-charcoal uppercase leading-none mt-1 group-hover:text-luxury-gold transition-colors">
-                Aysh
+                <span className="brand-A text-luxury-gold">A</span>ysh
               </span>
               <span className="font-serif text-[11px] md:text-xs tracking-[0.3em] text-luxury-gold uppercase leading-none mt-1.5 font-medium">
                 Evermore

@@ -80,7 +80,7 @@ export const Home: React.FC<HomeProps> = ({ onOpenBooking }) => {
               transition={{ duration: 1.2, delay: 0.2 }}
               className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold tracking-[0.18em] text-luxury-charcoal uppercase leading-[1.1] select-text"
             >
-              Aysh <span className="text-luxury-gold">Evermore</span>
+              <span className="brand-A text-luxury-gold">A</span>ysh <span className="text-luxury-gold">Evermore</span>
             </motion.h1>
 
             <motion.div
