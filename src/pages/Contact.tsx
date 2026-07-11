@@ -36,9 +36,32 @@ export const Contact: React.FC = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
+    const selectedEventLabel = eventTypes.find(t => t.value === formData.eventType)?.label || formData.eventType;
+    
+    const messageText = `Hello Aysh Evermore, I would like to request a consultation:
+
+✨ *Client Details* ✨
+• *Name:* ${formData.name}
+• *Phone:* ${formData.phone}
+• *Email:* ${formData.email}
+
+📅 *Event Details* 📅
+• *Experience Type:* ${selectedEventLabel}
+• *Preferred Date:* ${formData.eventDate || 'TBD'}
+• *Guest Count:* ${formData.guestCount || 'TBD'}
+• *Additional Notes:* ${formData.message || 'None'}`;
+
+    const encodedText = encodeURIComponent(messageText);
+    const whatsappUrl = `https://wa.me/916282603885?text=${encodedText}`;
+
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSuccess(true);
+      
+      // Open WhatsApp chat in a new tab
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+      
+      // Reset form
       setFormData({
         name: '',
         email: '',
@@ -48,7 +71,7 @@ export const Contact: React.FC = () => {
         eventDate: '',
         message: '',
       });
-    }, 1500);
+    }, 1200);
   };
 
   const contactCards = [

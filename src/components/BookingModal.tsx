@@ -46,12 +46,31 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, eve
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate sending email/form to ayshevermore01@gmail.com
+    const selectedEventLabel = eventTypes.find(t => t.value === formData.eventType)?.label || formData.eventType;
+    
+    const messageText = `Hello Aysh Evermore, I would like to request a consultation:
+
+✨ *Client Details* ✨
+• *Name:* ${formData.name}
+• *Phone:* ${formData.phone}
+• *Email:* ${formData.email}
+
+📅 *Event Details* 📅
+• *Experience Type:* ${selectedEventLabel}
+• *Preferred Date:* ${formData.eventDate || 'TBD'}
+• *Additional Notes:* ${formData.message || 'None'}`;
+
+    const encodedText = encodeURIComponent(messageText);
+    const whatsappUrl = `https://wa.me/916282603885?text=${encodedText}`;
+
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSuccess(true);
       
-      // Reset form after submission
+      // Open WhatsApp chat in a new tab
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+      
+      // Reset form
       setFormData({
         name: '',
         email: '',
@@ -60,7 +79,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, eve
         eventDate: '',
         message: '',
       });
-    }, 1500);
+    }, 1200);
   };
 
   return (
