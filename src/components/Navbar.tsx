@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, Phone } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import logoGold from '../assets/logo_gold.png';
 
 interface NavbarProps {
   onOpenBooking: () => void;
@@ -66,19 +67,18 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
           <Link
             to="/"
             onClick={() => handleNavLinkClick('/')}
-            className="flex items-center space-x-3 group mr-6 lg:mr-16 shrink-0"
+            className="flex items-center space-x-4 group mr-6 lg:mr-16 shrink-0"
           >
-            <div className="relative w-11 h-11 border border-luxury-gold rounded-full flex items-center justify-center transition-all duration-500 group-hover:bg-luxury-gold/10">
-              <span className="font-serif text-sm font-semibold tracking-wider text-luxury-gold group-hover:scale-105 transition-transform duration-500">
-                AE
-              </span>
-              <div className="absolute -inset-0.5 border border-luxury-gold/30 rounded-full scale-110 group-hover:scale-100 transition-all duration-500"></div>
-            </div>
+            <img
+              src={logoGold}
+              alt="Aysh Evermore Logo"
+              className="w-14 h-14 md:w-16 md:h-16 object-contain transition-transform duration-500 group-hover:scale-105"
+            />
             <div className="flex flex-col">
-              <span className="font-serif text-sm font-bold tracking-[0.25em] text-luxury-charcoal uppercase leading-none mt-1 group-hover:text-luxury-gold transition-colors">
+              <span className="font-serif text-base md:text-lg font-bold tracking-[0.25em] text-luxury-charcoal uppercase leading-none mt-1 group-hover:text-luxury-gold transition-colors">
                 Aysh
               </span>
-              <span className="font-serif text-[10px] tracking-[0.3em] text-luxury-gold uppercase leading-none mt-1 font-medium">
+              <span className="font-serif text-[11px] md:text-xs tracking-[0.3em] text-luxury-gold uppercase leading-none mt-1.5 font-medium">
                 Evermore
               </span>
             </div>
