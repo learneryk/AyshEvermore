@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Phone, Mail, MapPin } from 'lucide-react';
 import logoGold from '../assets/logo_gold.png';
+import letterAGold from '../assets/letter_A_gold.png';
 
 export const Footer: React.FC = () => {
   const navigate = useNavigate();
@@ -22,11 +23,21 @@ export const Footer: React.FC = () => {
               alt="Aysh Evermore Logo"
               className="w-12 h-12 object-contain"
             />
-            <div className="flex flex-col">
-              <span className="font-serif text-sm font-bold tracking-[0.25em] text-white uppercase leading-none">
-                <span className="brand-A text-luxury-gold">A</span>ysh
+            <div className="flex flex-col justify-center">
+              <div className="flex items-center">
+                <img
+                  src={letterAGold}
+                  alt="A"
+                  className="h-[1.3em] w-auto inline-block object-contain -mr-1 -ml-0.5 align-baseline select-none"
+                  style={{ transform: 'translateY(-1%)' }}
+                />
+                <span className="font-serif text-sm font-bold tracking-[0.25em] text-white uppercase leading-none">
+                  ysh
+                </span>
+              </div>
+              <span className="font-serif text-[10px] tracking-[0.3em] text-luxury-gold uppercase leading-none mt-1">
+                Evermore
               </span>
-              <span className="font-serif text-[10px] tracking-[0.3em] text-luxury-gold uppercase leading-none mt-1">Evermore</span>
             </div>
           </div>
           
