@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, Phone } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logoGold from '../assets/logo_gold.png';
-import letterAGold from '../assets/letter_A_gold.png';
 
 interface NavbarProps {
   onOpenBooking: () => void;
@@ -75,19 +74,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
               alt="Aysh Evermore Logo"
               className="w-14 h-14 md:w-16 md:h-16 object-contain transition-transform duration-500 group-hover:scale-105"
             />
-            <div className="flex flex-col justify-center">
-              <div className="flex items-center">
-                <img
-                  src={letterAGold}
-                  alt="A"
-                  className="h-[1.45em] md:h-[1.65em] w-auto inline-block object-contain -mr-1.5 -ml-1 align-baseline select-none"
-                  style={{ transform: 'translateY(-1.5%)' }}
-                />
-                <span className="font-serif text-base md:text-lg font-bold tracking-[0.25em] text-luxury-charcoal uppercase leading-none mt-1 group-hover:text-luxury-gold transition-colors">
-                  ysh
-                </span>
-              </div>
-              <span className="font-serif text-[11px] md:text-xs tracking-[0.3em] text-luxury-gold uppercase leading-none mt-1 font-medium">
+            <div className="flex flex-col">
+              <span className="font-serif text-base md:text-lg font-bold tracking-[0.25em] text-luxury-charcoal uppercase leading-none mt-1 group-hover:text-luxury-gold transition-colors">
+                Aysh
+              </span>
+              <span className="font-serif text-[11px] md:text-xs tracking-[0.3em] text-luxury-gold uppercase leading-none mt-1.5 font-medium">
                 Evermore
               </span>
             </div>
