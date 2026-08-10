@@ -70,7 +70,7 @@ export const Home: React.FC<HomeProps> = ({ onOpenBooking }) => {
             >
               <div className="w-8 h-[1px] bg-luxury-gold" />
               <span className="font-serif italic text-xs md:text-sm text-luxury-gold tracking-[0.25em] uppercase">
-                Atelier of Bespoke Surprises
+                Some Feelings Deserve More Than Words
               </span>
             </motion.div>
 
@@ -80,7 +80,8 @@ export const Home: React.FC<HomeProps> = ({ onOpenBooking }) => {
               transition={{ duration: 1.2, delay: 0.2 }}
               className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold tracking-[0.18em] text-luxury-charcoal uppercase leading-[1.1] select-text"
             >
-              Aysh <span className="text-luxury-gold ml-3 md:ml-5">Evermore</span>
+              Aysh <br />
+              <span className="text-luxury-gold">Evermore</span>
             </motion.h1>
 
             <motion.div
@@ -96,7 +97,9 @@ export const Home: React.FC<HomeProps> = ({ onOpenBooking }) => {
               transition={{ duration: 1, delay: 0.6 }}
               className="font-sans text-base md:text-lg text-luxury-charcoal/70 leading-[1.7] max-w-lg font-normal select-text"
             >
-              Kerala's premier experience designer. We shape stealth surprise proposals, fairytale weddings, and luxury milestone celebrations into living works of art. Some feelings deserve more than words.
+              Every celebration begins with a feeling.
+              Whether it's a surprise that brings tears, a wedding filled with unforgettable moments, or a milestone worth celebrating, we transform your vision into an experience you'll cherish forever.
+              Because some feelings deserve more than words.
             </motion.p>
 
             <motion.div
@@ -109,13 +112,13 @@ export const Home: React.FC<HomeProps> = ({ onOpenBooking }) => {
                 onClick={onOpenBooking}
                 className="px-8 py-4 bg-luxury-gold border border-luxury-gold text-white hover:bg-transparent hover:text-luxury-gold transition-all duration-500 font-serif text-xs uppercase tracking-widest font-bold shadow-lg hover:shadow-luxury/20 cursor-pointer"
               >
-                Request Consultation
+                Plan Your Celebration
               </button>
               <button
                 onClick={() => handleNavigate('/services')}
                 className="px-8 py-4 bg-transparent border border-luxury-charcoal text-luxury-charcoal hover:bg-luxury-charcoal hover:text-white transition-all duration-500 font-serif text-xs uppercase tracking-widest font-bold cursor-pointer"
               >
-                Our Experiences
+                Explore Our Services
               </button>
             </motion.div>
           </div>
@@ -136,8 +139,8 @@ export const Home: React.FC<HomeProps> = ({ onOpenBooking }) => {
               transition={{ duration: 1.5, delay: 0.4 }}
               className="w-[270px] h-[370px] md:w-[340px] md:h-[450px] border-gold-double relative p-3 bg-luxury-cream shadow-2xl z-10"
             >
-              <div 
-                className="w-full h-full bg-cover bg-center filter grayscale-[10%] hover:grayscale-0 transition-all duration-1000" 
+              <div
+                className="w-full h-full bg-cover bg-center filter grayscale-[10%] hover:grayscale-0 transition-all duration-1000"
                 style={{ backgroundImage: `url(${proposalHero})` }}
               />
             </motion.div>
@@ -149,8 +152,8 @@ export const Home: React.FC<HomeProps> = ({ onOpenBooking }) => {
               transition={{ duration: 1.5, delay: 0.7 }}
               className="absolute -bottom-10 -left-2 md:-left-8 w-[160px] h-[210px] md:w-[190px] md:h-[270px] border border-luxury-gold/25 bg-luxury-cream p-2 shadow-2xl z-20 hidden sm:block"
             >
-              <div 
-                className="w-full h-full bg-cover bg-center filter grayscale-[15%] hover:grayscale-0 transition-all duration-1000" 
+              <div
+                className="w-full h-full bg-cover bg-center filter grayscale-[15%] hover:grayscale-0 transition-all duration-1000"
                 style={{ backgroundImage: `url(${weddingGold})` }}
               />
             </motion.div>
@@ -179,10 +182,10 @@ export const Home: React.FC<HomeProps> = ({ onOpenBooking }) => {
               align="left"
             />
             <p className="font-sans text-base md:text-lg text-luxury-charcoal/70 leading-[1.7] font-normal tracking-wide">
-              At Aysh Evermore, we believe the most beautiful memories are created when emotions are transformed into meaningful experiences. Whether it's a surprise birthday, a heartfelt proposal, a wedding celebration, a corporate gathering, or a simple gesture of appreciation, we take care of every detail so you can focus on what truly matters — the moment itself.
+              At Aysh Evermore, we turn those feelings into beautifully crafted experiences. Whether it's an intimate proposal, a dream wedding, a joyful birthday, or a once-in-a-lifetime celebration, every detail is designed with purpose, elegance, and heart.
             </p>
             <p className="font-sans text-base md:text-lg text-luxury-charcoal/70 leading-[1.7] font-normal tracking-wide">
-              From planning to execution, we create experiences that are personal, memorable, and filled with meaning. Because some feelings deserve more than words.
+              We believe the most meaningful moments aren't measured by how grand they are, but by how deeply they're remembered. That's why we don't simply plan events. We create moments you'll carry with you forever.
             </p>
 
             <blockquote className="border-l-2 border-luxury-gold pl-6 my-6 font-serif italic text-base md:text-lg tracking-wider text-luxury-gold leading-[1.6]">
@@ -204,15 +207,15 @@ export const Home: React.FC<HomeProps> = ({ onOpenBooking }) => {
           <div className="lg:col-span-5 relative flex justify-center">
             {/* Gold Double Border Frame */}
             <div className="w-[300px] h-[400px] border-gold-double relative p-3">
-              <div 
-                className="w-full h-full bg-cover bg-center filter grayscale-[15%]" 
+              <div
+                className="w-full h-full bg-cover bg-center filter grayscale-[15%]"
                 style={{ backgroundImage: `url(${surpriseGarden})` }}
               />
             </div>
             {/* Small Overlay Frame */}
             <div className="absolute -bottom-8 -left-8 w-[200px] h-[150px] border border-luxury-gold/20 bg-luxury-cream p-2 shadow-lg hidden sm:block">
-              <div 
-                className="w-full h-full bg-cover bg-center" 
+              <div
+                className="w-full h-full bg-cover bg-center"
                 style={{ backgroundImage: `url(${weddingGold})` }}
               />
             </div>
@@ -267,7 +270,7 @@ export const Home: React.FC<HomeProps> = ({ onOpenBooking }) => {
             >
               {/* Photo Area */}
               <div className="relative h-64 overflow-hidden">
-                <div 
+                <div
                   className="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                   style={{ backgroundImage: `url(${category.image})` }}
                 />
@@ -347,8 +350,8 @@ export const Home: React.FC<HomeProps> = ({ onOpenBooking }) => {
           {/* Image Left */}
           <div className="lg:col-span-5 relative flex justify-center order-2 lg:order-1">
             <div className="w-[300px] h-[400px] border-gold-double relative p-3">
-              <div 
-                className="w-full h-full bg-cover bg-center filter grayscale-[10%]" 
+              <div
+                className="w-full h-full bg-cover bg-center filter grayscale-[10%]"
                 style={{ backgroundImage: `url(${corporateGala})` }}
               />
             </div>
@@ -424,12 +427,12 @@ export const Home: React.FC<HomeProps> = ({ onOpenBooking }) => {
               rel="noopener noreferrer"
               className="relative group aspect-square overflow-hidden border border-[#C5A880]/15 rounded shadow-sm block"
             >
-              <div 
-                className="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110" 
+              <div
+                className="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                 style={{ backgroundImage: `url(${img})` }}
               />
               <div className="absolute inset-0 bg-luxury-charcoal/0 group-hover:bg-luxury-charcoal/40 transition-all duration-300 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"><rect width="20" height="20" x="2" y="2" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" x2="17.51" y1="6.5" y2="6.5" /></svg>
               </div>
             </a>
           ))}

@@ -36,14 +36,14 @@ export const About: React.FC = () => {
         {/* Left Side: Images */}
         <div className="lg:col-span-5 relative flex justify-center">
           <div className="w-[280px] h-[380px] border-gold-double relative p-3">
-            <div 
-              className="w-full h-full bg-cover bg-center filter grayscale-[10%]" 
+            <div
+              className="w-full h-full bg-cover bg-center filter grayscale-[10%]"
               style={{ backgroundImage: `url(${proposalHero})` }}
             />
           </div>
           <div className="absolute -bottom-6 -right-6 w-[180px] h-[220px] border border-luxury-gold/25 p-2 bg-luxury-cream shadow-lg hidden sm:block">
-            <div 
-              className="w-full h-full bg-cover bg-center" 
+            <div
+              className="w-full h-full bg-cover bg-center"
               style={{ backgroundImage: `url(${surpriseGarden})` }}
             />
           </div>
@@ -51,7 +51,7 @@ export const About: React.FC = () => {
 
         {/* Right Side: Philosophy Text */}
         <div className="lg:col-span-7 flex flex-col space-y-6">
-          <span className="font-serif italic text-sm tracking-widest uppercase text-luxury-gold mb-1 block">The Beginning of Always</span>
+          <span className="font-serif italic text-sm tracking-widest uppercase text-luxury-gold mb-1 block">Where Every Memory Begins</span>
           <h3 className="font-serif text-lg tracking-widest uppercase text-luxury-charcoal">
             We Believe in Emotions
           </h3>

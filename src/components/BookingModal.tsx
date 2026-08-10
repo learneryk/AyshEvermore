@@ -28,13 +28,19 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, eve
   }, [eventType]);
 
   const eventTypes = [
-    { value: 'proposal', label: 'Proposal Planning' },
-    { value: 'wedding', label: 'Wedding Planning & Execution' },
-    { value: 'birthday', label: 'Milestone Birthday Celebration' },
-    { value: 'anniversary', label: 'Anniversary Surprise' },
-    { value: 'corporate', label: 'Corporate Gala / Team Building' },
-    { value: 'surprise', label: 'Midnight / Custom Dream Surprise' },
-    { value: 'other', label: 'Other Special Event' },
+    { value: 'proposal', label: 'Proposal' },
+    { value: 'wedding', label: 'Wedding' },
+    { value: 'engagement', label: 'Engagement' },
+    { value: 'birthday', label: 'Birthday' },
+    { value: 'anniversary', label: 'Anniversary' },
+    { value: 'romantic_date', label: 'Romantic Date' },
+    { value: 'baby_shower', label: 'Baby Shower' },
+    { value: 'housewarming', label: 'Housewarming' },
+    { value: 'corporate', label: 'Corporate Event' },
+    { value: 'private_celebration', label: 'Private Celebration' },
+    { value: 'surprise_event', label: 'Surprise Event' },
+    { value: 'festive', label: 'Festive Event (Onam, Eid, Christmas, etc.)' },
+    { value: 'custom', label: 'Custom Experience' },
   ];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -180,7 +186,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, eve
                     {/* Event Type Dropdown */}
                     <div className="flex flex-col">
                       <label htmlFor="eventType" className="uppercase tracking-widest text-[10px] text-luxury-charcoal/60 mb-1.5 font-medium">
-                        Experience Type
+                        Select your celebration
                       </label>
                       <select
                         id="eventType"
@@ -200,7 +206,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, eve
                     {/* Date Input */}
                     <div className="flex flex-col">
                       <label htmlFor="eventDate" className="uppercase tracking-widest text-[10px] text-luxury-charcoal/60 mb-1.5 font-medium">
-                        Desired Date
+                        Event date
                       </label>
                       <input
                         type="date"
@@ -216,7 +222,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, eve
                   {/* Message Input */}
                   <div className="flex flex-col">
                     <label htmlFor="message" className="uppercase tracking-widest text-[10px] text-luxury-charcoal/60 mb-1.5 font-medium">
-                      Tell us about your dream *
+                      Tell us about your celebration *
                     </label>
                     <textarea
                       required
@@ -240,7 +246,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, eve
                       <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                     ) : (
                       <>
-                        <span>Submit Request</span>
+                        <span>Send inquiry</span>
                         <Send size={14} />
                       </>
                     )}

@@ -18,13 +18,19 @@ export const Contact: React.FC = () => {
   const [isSuccess, setIsSuccess] = useState(false);
 
   const eventTypes = [
-    { value: 'proposal', label: 'Proposal Planning' },
-    { value: 'wedding', label: 'Wedding Planning & Execution' },
-    { value: 'birthday', label: 'Milestone Birthday Celebration' },
-    { value: 'anniversary', label: 'Anniversary Surprise' },
-    { value: 'corporate', label: 'Corporate Gala / Team Building' },
-    { value: 'surprise', label: 'Midnight / Custom Dream Surprise' },
-    { value: 'other', label: 'Other Special Event' },
+    { value: 'proposal', label: 'Proposal' },
+    { value: 'wedding', label: 'Wedding' },
+    { value: 'engagement', label: 'Engagement' },
+    { value: 'birthday', label: 'Birthday' },
+    { value: 'anniversary', label: 'Anniversary' },
+    { value: 'romantic_date', label: 'Romantic Date' },
+    { value: 'baby_shower', label: 'Baby Shower' },
+    { value: 'housewarming', label: 'Housewarming' },
+    { value: 'corporate', label: 'Corporate Event' },
+    { value: 'private_celebration', label: 'Private Celebration' },
+    { value: 'surprise_event', label: 'Surprise Event' },
+    { value: 'festive', label: 'Festive Event (Onam, Eid, Christmas, etc.)' },
+    { value: 'custom', label: 'Custom Experience' },
   ];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
