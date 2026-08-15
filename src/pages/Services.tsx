@@ -142,7 +142,7 @@ export const Services: React.FC<ServicesProps> = ({ onOpenBooking }) => {
               {cmsData?.deliverablesTitle || "We Take Care Of Everything"}
             </h4>
             <ul className="space-y-3 text-xs">
-              {activeCategory.deliverables?.map((item) => (
+              {activeCategory.deliverables?.map((item: string) => (
                 <li key={item} className="flex items-center space-x-2.5 text-luxury-charcoal/80">
                   <Check size={14} className="text-luxury-gold shrink-0" />
                   <span className="font-sans leading-tight">{item}</span>

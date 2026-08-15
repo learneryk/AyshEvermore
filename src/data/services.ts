@@ -231,38 +231,32 @@ export const servicesData: ServiceCategory[] = [
       {
         title: "Theme-Based Celebrations",
         tagline: "Step into a world of imagination. Custom themes crafted to bring your dream celebration beautifully to life.",
-        description: "Vintage Hollywood, Parisian garden, bohemian picnic, or futuristic black-tie. We conceptualize, procure, and install specific detailed worlds.",
-        details: ["Unique material procurement", "Complete set construction", "Thematic props design", "Coordinated dress code prompts", "Immersive caterer matching"]
+        description: "Vintage Hollywood, Parisian garden, bohemian picnic, or futuristic black-tie. We conceptualize, procure, and install specific detailed worlds."
       },
       {
         title: "Midnight Surprise Experiences",
         tagline: "Unexpected. Magical. Unforgettable. We create enchanting surprises that transform ordinary nights into extraordinary memories.",
-        description: "A complete room transformation, flash mobs, or roadside candle lit setups at the stroke of midnight. Handled with absolute stealth.",
-        details: ["Stealth crew logistics", "Room setup transformation while away", "LED light arrays & balloons", "Midnight custom cake deliveries", "Musician stealth booking"]
+        description: "A complete room transformation, flash mobs, or roadside candle lit setups at the stroke of midnight. Handled with absolute stealth."
       },
       {
         title: "Personalized Dream Events",
         tagline: "Thoughtful. Intimate. Yours. Every detail is personal, because your story deserves a celebration as unique as you are.",
-        description: "A private movie screening for two in an outdoor garden, a custom memory room detailing every year of friendship, or an artistic showcase.",
-        details: ["Outdoor cinema projection setups", "Personalized timelines display", "Private butler dining service", "Curated gifts from around the world", "Private location sourcing"]
+        description: "A private movie screening for two in an outdoor garden, a custom memory room detailing every year of friendship, or an artistic showcase."
       },
       {
         title: "Destination Surprise Experiences",
         tagline: "Love. Adventure. Discovery. We take your celebrations places—creating unforgettable memories across the globe.",
-        description: "Surprise vacations, proposals on cliffs, or luxury getaways to beautiful spots around the world. We handle flights, hotels, and local surprises.",
-        details: ["Travel booking liaison", "Global vendor coordination", "Custom logistics mapping", "On-site planner support", "Local culture integration styling"]
+        description: "Surprise vacations, proposals on cliffs, or luxury getaways to beautiful spots around the world. We handle flights, hotels, and local surprises."
       },
       {
         title: "Memory Lane Experiences",
         tagline: "A walk down memory lane, beautifully recreated. We celebrate your journey with nostalgia, love & meaning.",
-        description: "We collect old letters, voicemails, photographs, and records, and display them in a gallery setup, transforming recollections into a tactile reality.",
-        details: ["Artistic photo gallery grid installations", "Voice record playboxes", "Vintage framing design", "Warm nostalgic candlelight setups", "Handmade custom journal keepsakes"]
+        description: "We collect old letters, voicemails, photographs, and records, and display them in a gallery setup, transforming recollections into a tactile reality."
       },
       {
         title: "The Impossible Idea Experience",
         tagline: "You dream it. We make it real. From the unthinkable to the extraordinary—there's no limit to what we can create.",
-        description: "Have a crazy idea? A surprise flash mob, a helicopter reveal, or a customized quest around the city? We design and execute complex concepts.",
-        details: ["Sourcing rare materials/permits", "City-wide timeline mapping", "Actor/Performer coordination", "Secret communications channel design", "Precision execution team"]
+        description: "Have a crazy idea? A surprise flash mob, a helicopter reveal, or a customized quest around the city? We design and execute complex concepts."
       }
     ]
   }
