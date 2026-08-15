@@ -256,7 +256,7 @@ export const Home: React.FC<HomeProps> = ({ onOpenBooking }) => {
             <div className="w-[300px] h-[400px] border-gold-double relative p-3">
               <div 
                 className="absolute inset-0 bg-cover bg-center filter grayscale-[20%] transition-transform duration-1000 hover:scale-105"
-                style={{ backgroundImage: !cmsData ? 'none' : `url(${cmsData?.aboutImage ? urlFor(cmsData.aboutImage).url() : surpriseGarden})` }}
+                style={{ backgroundImage: !cmsData ? 'none' : `url(${cmsData?.storyImageMain ? urlFor(cmsData.storyImageMain).url() : surpriseGarden})` }}
               />
             </div>
             {/* Small Overlay Frame */}
