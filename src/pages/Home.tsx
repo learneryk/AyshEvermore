@@ -186,7 +186,7 @@ export const Home: React.FC<HomeProps> = ({ onOpenBooking }) => {
               initial={{ opacity: 0, x: -30, y: 30 }}
               animate={{ opacity: 1, x: 0, y: 0 }}
               transition={{ duration: 1.5, delay: 0.7 }}
-              className="absolute -bottom-10 -left-2 md:-left-8 w-[160px] h-[210px] md:w-[190px] md:h-[270px] border border-luxury-gold/25 bg-luxury-cream p-2 shadow-2xl z-20 hidden sm:block"
+              className="absolute -bottom-10 -left-2 md:-left-8 w-[140px] h-[190px] md:w-[190px] md:h-[270px] border border-luxury-gold/25 bg-luxury-cream p-2 shadow-2xl z-20"
             >
               <div
                 className="w-full h-full bg-cover bg-center filter grayscale-[15%] hover:grayscale-0 transition-all duration-1000"
@@ -260,7 +260,7 @@ export const Home: React.FC<HomeProps> = ({ onOpenBooking }) => {
               />
             </div>
             {/* Small Overlay Frame */}
-            <div className="absolute -bottom-8 -left-8 w-[200px] h-[150px] border border-luxury-gold/20 bg-luxury-cream p-2 shadow-lg hidden sm:block">
+            <div className="absolute -bottom-8 -left-4 md:-left-8 w-[150px] h-[110px] md:w-[200px] md:h-[150px] border border-luxury-gold/20 bg-luxury-cream p-2 shadow-lg">
               <div
                 className="w-full h-full bg-cover bg-center"
                 style={{ backgroundImage: !cmsData ? 'none' : `url(${cmsData?.storyImageSmall ? urlFor(cmsData.storyImageSmall).url() : weddingGold})` }}
