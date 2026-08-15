@@ -130,9 +130,9 @@ export const Services: React.FC<ServicesProps> = ({ onOpenBooking }) => {
       <section className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
         {/* Left Side: Category Banner & Deliverables */}
         <div className="lg:col-span-4 flex flex-col space-y-6">
-          <div className="border border-luxury-gold/20 p-2 rounded bg-white shadow-md">
+          <div className="border border-luxury-gold/20 p-2 rounded-[50%] bg-white shadow-md mx-auto w-full max-w-[320px] aspect-[4/3] flex items-center justify-center overflow-hidden">
             <div 
-              className="h-56 bg-cover rounded-sm transition-all duration-700"
+              className="w-full h-full bg-cover transition-all duration-700 rounded-[50%]"
               style={{ 
                 backgroundImage: `url(${activeCategory.image && typeof activeCategory.image !== 'string' ? urlFor(activeCategory.image).url() : (activeCategory.image || defaultServicesData.find(s => s.slug === activeCategory.slug)?.image)})`,
                 backgroundPosition: (activeCategory.image && typeof activeCategory.image !== 'string' && activeCategory.image.hotspot) 
