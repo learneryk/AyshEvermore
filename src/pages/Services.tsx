@@ -2,9 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SectionHeader } from '../components/SectionHeader';
-import { servicesData } from '../data/services';
-import type { SubService } from '../data/services';
+import { servicesData as defaultServicesData } from '../data/services';
+import type { SubService, ServiceCategory } from '../data/services';
 import { Heart, Sparkles, Gem, Award, Gift, Check, ChevronDown, ChevronUp } from 'lucide-react';
+import { client } from '../sanityClient';
+import { createImageUrlBuilder } from '@sanity/image-url';
+
+const builder = createImageUrlBuilder(client);
+function urlFor(source: any) {
+  return builder.image(source);
+}
 
 interface ServicesProps {
   onOpenBooking: (preselectedEvent?: string) => void;
@@ -15,13 +22,47 @@ export const Services: React.FC<ServicesProps> = ({ onOpenBooking }) => {
   const [activeTab, setActiveTab] = useState('love-relationships');
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
 
+  const [cmsData, setCmsData] = useState<any>(null);
+  const [categories, setCategories] = useState<any[]>(defaultServicesData);
+  
+  useEffect(() => {
+    const pageQuery = `*[_type == "servicesPage"][0]`;
+    const catQuery = `*[_type == "serviceCategory"] | order(_createdAt asc)`;
+    
+    // Fetch initial data
+    Promise.all([
+      client.fetch(pageQuery),
+      client.fetch(catQuery)
+    ]).then(([pageData, catData]) => {
+      setCmsData(pageData);
+      setCategories(catData.length > 0 ? catData : defaultServicesData);
+    }).catch(console.error);
+
+    // Listen for changes
+    const pageSub = client.listen(pageQuery).subscribe((update) => {
+      if (update.result) setCmsData(update.result);
+      else client.fetch(pageQuery).then(setCmsData);
+    });
+
+    const catSub = client.listen(catQuery).subscribe(() => {
+      client.fetch(catQuery).then(data => setCategories(data.length > 0 ? data : defaultServicesData));
+    });
+
+    return () => {
+      pageSub.unsubscribe();
+      catSub.unsubscribe();
+    };
+  }, []);
+
+  const activeServicesData = categories;
+
   // Sync state with URL search params (e.g. ?category=love-relationships)
   useEffect(() => {
     const category = searchParams.get('category');
-    if (category && servicesData.some(s => s.slug === category)) {
+    if (category && activeServicesData.some((s: ServiceCategory) => s.slug === category)) {
       setActiveTab(category);
     }
-  }, [searchParams]);
+  }, [searchParams, activeServicesData]);
 
   const handleTabChange = (slug: string) => {
     setActiveTab(slug);
@@ -40,7 +81,7 @@ export const Services: React.FC<ServicesProps> = ({ onOpenBooking }) => {
     }
   };
 
-  const activeCategory = servicesData.find(s => s.slug === activeTab) || servicesData[0];
+  const activeCategory = activeServicesData.find((s: ServiceCategory) => s.slug === activeTab) || activeServicesData[0];
 
   const getEventTypeMapping = (slug: string) => {
     if (slug === 'love-relationships') return 'proposal';
@@ -56,16 +97,16 @@ export const Services: React.FC<ServicesProps> = ({ onOpenBooking }) => {
       {/* 1. Header Section */}
       <section className="max-w-7xl mx-auto px-6 md:px-12 mb-12 text-center">
         <SectionHeader
-          title="Bespoke Experiences"
-          tagline="Tailored to your story"
-          subtitle="From grand traditional matrimonial stages to quiet midnight candle-lit dates, explore our diverse planning services."
+          title={cmsData?.headerTitle || "Bespoke Experiences"}
+          tagline={cmsData?.headerTagline || "Tailored to your story"}
+          subtitle={cmsData?.headerSubtitle || "From grand traditional matrimonial stages to quiet midnight candle-lit dates, explore our diverse planning services."}
         />
       </section>
 
       {/* 2. Navigation Tabs */}
       <section className="max-w-7xl mx-auto px-6 md:px-12 mb-16 select-none">
         <div className="flex flex-wrap items-center justify-center gap-3 border-b border-luxury-gold/15 pb-4">
-          {servicesData.map((category) => {
+          {activeServicesData.map((category: ServiceCategory) => {
             const isActive = activeTab === category.slug;
             return (
               <button
@@ -92,16 +133,16 @@ export const Services: React.FC<ServicesProps> = ({ onOpenBooking }) => {
           <div className="border border-luxury-gold/20 p-2 rounded bg-white shadow-md">
             <div 
               className="h-56 bg-cover bg-center rounded-sm"
-              style={{ backgroundImage: `url(${activeCategory.image})` }}
+              style={{ backgroundImage: `url(${activeCategory.image && typeof activeCategory.image !== 'string' ? urlFor(activeCategory.image).url() : (activeCategory.image || defaultServicesData.find(s => s.slug === activeCategory.slug)?.image)})` }}
             />
           </div>
 
           <div className="glass-panel p-6 rounded-sm">
             <h4 className="font-serif text-[10px] font-bold tracking-widest text-luxury-gold uppercase mb-4">
-              We Take Care Of Everything
+              {cmsData?.deliverablesTitle || "We Take Care Of Everything"}
             </h4>
             <ul className="space-y-3 text-xs">
-              {activeCategory.deliverables.map((item) => (
+              {activeCategory.deliverables?.map((item) => (
                 <li key={item} className="flex items-center space-x-2.5 text-luxury-charcoal/80">
                   <Check size={14} className="text-luxury-gold shrink-0" />
                   <span className="font-sans leading-tight">{item}</span>
@@ -120,7 +161,7 @@ export const Services: React.FC<ServicesProps> = ({ onOpenBooking }) => {
             </p>
           </div>
 
-          {activeCategory.subServices.map((sub: SubService) => {
+          {activeCategory.subServices?.map((sub: SubService) => {
             const isExpanded = expandedCard === sub.title;
             return (
               <motion.div
@@ -161,27 +202,13 @@ export const Services: React.FC<ServicesProps> = ({ onOpenBooking }) => {
                           {sub.description}
                         </p>
 
-                        <div className="space-y-2">
-                          <span className="font-serif text-[9px] uppercase tracking-widest text-luxury-gold font-bold block">
-                            Key Experience Highlights
-                          </span>
-                          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                            {sub.details.map((detail) => (
-                              <li key={detail} className="flex items-start space-x-2 text-luxury-charcoal/80">
-                                <span className="text-luxury-gold text-[10px] mt-0.5">•</span>
-                                <span className="font-sans leading-tight">{detail}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-
                         {/* Direct Booking Trigger */}
                         <div className="pt-2 flex justify-end">
                           <button
                             onClick={() => onOpenBooking(getEventTypeMapping(activeCategory.slug))}
                             className="btn-luxury border-luxury-gold text-luxury-charcoal hover:text-white px-5 py-2 text-[10px]"
                           >
-                            Select Experience
+                            {cmsData?.selectExperienceBtn || "Select Experience"}
                           </button>
                         </div>
                       </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, useSearchParams } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { FloatingActions } from './components/FloatingActions';
@@ -39,11 +39,21 @@ export const AppContent: React.FC = () => {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [preselectedEvent, setPreselectedEvent] = useState<string | undefined>(undefined);
   const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const handleOpenBooking = (eventType?: string) => {
     setPreselectedEvent(eventType);
     setIsBookingOpen(true);
   };
+
+  useEffect(() => {
+    const bookIntent = searchParams.get('book');
+    if (bookIntent) {
+      handleOpenBooking(bookIntent);
+      searchParams.delete('book');
+      setSearchParams(searchParams, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
 
   return (
     <div className="flex flex-col min-h-screen bg-luxury-cream text-luxury-charcoal selection:bg-luxury-gold/30 selection:text-luxury-charcoal">

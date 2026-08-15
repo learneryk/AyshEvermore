@@ -1,10 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Phone, Mail, MapPin } from 'lucide-react';
 import logoGold from '../assets/logo_gold.png';
+import { client } from '../sanityClient';
 
 export const Footer: React.FC = () => {
   const navigate = useNavigate();
+  const [settings, setSettings] = useState<any>(null);
+
+  useEffect(() => {
+    const query = `*[_type == "siteSettings"][0]`;
+    client.fetch(query).then(setSettings).catch(console.error);
+
+    const subscription = client.listen(query).subscribe((update) => {
+      if (update.result) setSettings(update.result);
+      else client.fetch(query).then(setSettings);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const handleLinkClick = (path: string) => {
     navigate(path);
@@ -29,15 +43,15 @@ export const Footer: React.FC = () => {
           </div>
           
           <p className="text-xs leading-relaxed text-white/50">
-            Crafting timeless memories and luxury bespoke experiences. From romantic surprises to fairytale weddings, we materialize emotions.
+            {settings?.companyDescription || "Creating unforgettable experiences from the feelings that matter most. From intimate surprises to complete weddings, we turn your moments into memories that stay forever."}
           </p>
 
           <div className="flex flex-col pt-2">
             <span className="font-serif italic text-xs tracking-widest text-luxury-gold uppercase leading-none">
-              Some Feelings Deserve
+              {settings?.footerTaglineTop || "Some Feelings Deserve"}
             </span>
             <span className="font-serif italic text-xs tracking-widest text-luxury-gold uppercase leading-none mt-2 ml-6">
-              More Than Words.
+              {settings?.footerTaglineBottom || "More Than Words."}
             </span>
           </div>
         </div>
@@ -67,39 +81,29 @@ export const Footer: React.FC = () => {
         {/* Services Showcase */}
         <div>
           <h4 className="text-white font-serif text-xs uppercase tracking-widest mb-6 pb-2 border-b border-luxury-gold/10 w-fit">
-            Our Experiences
+            Our Services
           </h4>
-          <ul className="space-y-3 text-xs text-white/50">
-            <li>
-              <button onClick={() => handleLinkClick('/services')} className="hover:text-luxury-gold transition-colors duration-300">
-                Proposal Planning
-              </button>
-            </li>
-            <li>
-              <button onClick={() => handleLinkClick('/services')} className="hover:text-luxury-gold transition-colors duration-300">
-                Wedding Day Management
-              </button>
-            </li>
-            <li>
-              <button onClick={() => handleLinkClick('/services')} className="hover:text-luxury-gold transition-colors duration-300">
-                Surprise Date Setups
-              </button>
-            </li>
-            <li>
-              <button onClick={() => handleLinkClick('/services')} className="hover:text-luxury-gold transition-colors duration-300">
-                Milestone Birthdays
-              </button>
-            </li>
-            <li>
-              <button onClick={() => handleLinkClick('/services')} className="hover:text-luxury-gold transition-colors duration-300">
-                Corporate Galas
-              </button>
-            </li>
-            <li>
-              <button onClick={() => handleLinkClick('/services')} className="hover:text-luxury-gold transition-colors duration-300">
-                Midnight Surprises
-              </button>
-            </li>
+          <ul className="grid grid-cols-2 gap-x-6 gap-y-3 text-xs text-white/50">
+            {(settings?.servicesList || ['Wedding Day Management', 'Proposal Planning', 'Surprise Date Setups', 'Birthday & Milestone Celebrations', 'Corporate Events', 'Décor & Styling', 'Photography & Videography', 'Catering Services', 'Entertainment & Activities', 'Home Décor', 'Custom Experiences']).map((service: string) => {
+              
+              // Map text to form dropdown values dynamically
+              const eventType = service.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/(^_|_$)/g, '');
+              
+              return (
+                <li key={service}>
+                  <button 
+                    onClick={() => {
+                      navigate(`/services?book=${eventType}`);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }} 
+                    className="hover:text-luxury-gold transition-colors duration-300 text-left line-clamp-1"
+                    title={service}
+                  >
+                    {service}
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         </div>
 
@@ -111,31 +115,31 @@ export const Footer: React.FC = () => {
           <ul className="space-y-4 text-xs">
             <li className="flex items-start space-x-3">
               <MapPin size={16} className="text-luxury-gold shrink-0 mt-0.5" />
-              <span className="leading-relaxed text-white/60">
-                TVM, Manacaud,<br />Kerala, India
+              <span className="leading-relaxed text-white/60 whitespace-pre-line">
+                {settings?.address || "TVM, Manacaud,\nKerala, India"}
               </span>
             </li>
             <li className="flex items-center space-x-3">
               <Phone size={16} className="text-luxury-gold shrink-0" />
-              <a href="tel:+916282603885" className="hover:text-luxury-gold transition-colors text-white/60">
-                +91 62826 03885
+              <a href={`tel:${settings?.phone?.replace(/\s/g, '') || '+916282603885'}`} className="hover:text-luxury-gold transition-colors text-white/60">
+                {settings?.phone || "+91 62826 03885"}
               </a>
             </li>
             <li className="flex items-center space-x-3">
               <Mail size={16} className="text-luxury-gold shrink-0" />
-              <a href="mailto:ayshevermore@gmail.com" className="hover:text-luxury-gold transition-colors text-white/60">
-                ayshevermore@gmail.com
+              <a href={`mailto:${settings?.email || 'ayshevermore@gmail.com'}`} className="hover:text-luxury-gold transition-colors text-white/60">
+                {settings?.email || "ayshevermore@gmail.com"}
               </a>
             </li>
             <li className="flex items-center space-x-3">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-luxury-gold shrink-0"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
               <a
-                href="https://instagram.com/aysh.evermore"
+                href={settings?.instagramLink || "https://instagram.com/aysh.evermore"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-luxury-gold transition-colors text-white/60"
               >
-                @aysh.evermore
+                {settings?.instagramHandle || "@aysh.evermore"}
               </a>
             </li>
           </ul>

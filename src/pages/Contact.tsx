@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SectionHeader } from '../components/SectionHeader';
 import { Phone, Mail, MapPin, Send, MessageCircle, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { client } from '../sanityClient';
 
 export const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +17,20 @@ export const Contact: React.FC = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [cmsData, setCmsData] = useState<any>(null);
+
+  useEffect(() => {
+    const query = `*[_type == "contactPage"][0]`;
+    
+    client.fetch(query).then(setCmsData).catch(console.error);
+
+    const subscription = client.listen(query).subscribe((update) => {
+      if (update.result) setCmsData(update.result);
+      else client.fetch(query).then(setCmsData);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const eventTypes = [
     { value: 'proposal', label: 'Proposal' },
@@ -80,30 +95,40 @@ export const Contact: React.FC = () => {
     }, 1200);
   };
 
-  const contactCards = [
+  const getIcon = (iconName: string) => {
+    switch (iconName) {
+      case 'Phone': return <Phone size={22} className="text-luxury-gold" />;
+      case 'MessageCircle': return <MessageCircle size={22} className="text-luxury-gold" />;
+      case 'Mail': return <Mail size={22} className="text-luxury-gold" />;
+      case 'Instagram': return <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-luxury-gold"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>;
+      default: return <Phone size={22} className="text-luxury-gold" />;
+    }
+  }
+
+  const defaultContactCards = [
     {
-      icon: <Phone size={22} className="text-luxury-gold" />,
+      icon: 'Phone',
       label: "Phone Contact",
       value: "+91 62826 03885",
       link: "tel:+916282603885",
       actionLabel: "Call Atelier"
     },
     {
-      icon: <MessageCircle size={22} className="text-luxury-gold" />,
+      icon: 'MessageCircle',
       label: "WhatsApp Chat",
       value: "+91 62826 03885",
       link: "https://wa.me/916282603885?text=Hi%20Aysh%20Evermore%2C%20I%20would%20like%20to%20inquire%20about%20planning%20an%20event.",
       actionLabel: "Message Chat"
     },
     {
-      icon: <Mail size={22} className="text-luxury-gold" />,
+      icon: 'Mail',
       label: "Email Inquiries",
       value: "ayshevermore@gmail.com",
       link: "mailto:ayshevermore@gmail.com",
       actionLabel: "Write Email"
     },
     {
-      icon: <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-luxury-gold"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>,
+      icon: 'Instagram',
       label: "Instagram Visuals",
       value: "@aysh.evermore",
       link: "https://instagram.com/aysh.evermore",
@@ -111,23 +136,25 @@ export const Contact: React.FC = () => {
     }
   ];
 
+  const activeContactCards = cmsData?.contactCards || defaultContactCards;
+
   return (
     <div className="w-full pt-28 pb-20 select-text">
       {/* Header */}
       <section className="max-w-7xl mx-auto px-6 md:px-12 mb-16 text-center">
         <SectionHeader
-          title="Connect With Us"
-          tagline="Let's create your moment"
-          subtitle="Whether you are planning a stealth proposal, a fairytale wedding, or an employee gala, we are ready to bring your vision to life."
+          title={cmsData?.headerTitle || "Connect With Us"}
+          tagline={cmsData?.headerTagline || "Let's create your moment"}
+          subtitle={cmsData?.headerSubtitle || "Whether you are planning a stealth proposal, a fairytale wedding, or an employee gala, we are ready to bring your vision to life."}
         />
       </section>
 
       {/* Grid Coordinates cards */}
       <section className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
-        {contactCards.map((card) => (
+        {activeContactCards.map((card: any) => (
           <div key={card.label} className="bg-white border border-[#C5A880]/15 p-6 rounded shadow-sm flex flex-col items-center text-center space-y-4 hover:border-luxury-gold/35 transition-colors">
             <div className="w-12 h-12 rounded-full border border-luxury-gold/25 flex items-center justify-center bg-luxury-warm/20">
-              {card.icon}
+              {getIcon(card.icon)}
             </div>
             <div className="flex flex-col">
               <span className="font-serif text-[10px] font-bold tracking-widest text-luxury-gold uppercase">{card.label}</span>
@@ -151,7 +178,7 @@ export const Contact: React.FC = () => {
         <div className="lg:col-span-7">
           <div className="glass-panel p-8 md:p-10 rounded-sm">
             <h3 className="font-serif text-sm font-semibold tracking-widest uppercase text-luxury-charcoal mb-6 pb-2 border-b border-luxury-gold/15 w-fit">
-              Experience Request Form
+              {cmsData?.formTitle || "Experience Request Form"}
             </h3>
 
             {!isSuccess ? (
@@ -316,17 +343,15 @@ export const Contact: React.FC = () => {
         <div className="lg:col-span-5 flex flex-col space-y-8">
           <div className="glass-panel p-8 rounded-sm flex flex-col space-y-6">
             <h3 className="font-serif text-sm font-semibold tracking-widest uppercase text-luxury-charcoal">
-              The Office
+              {cmsData?.officeTitle || "The Office"}
             </h3>
             
             <div className="flex items-start space-x-3 text-xs">
               <MapPin size={18} className="text-luxury-gold shrink-0 mt-0.5" />
               <div className="flex flex-col space-y-1">
-                <span className="font-serif font-bold uppercase tracking-wider text-[9px] text-luxury-gold">Atelier Address</span>
-                <span className="leading-relaxed text-luxury-charcoal/70">
-                  TVM, Manacaud,<br />
-                  Thiruvananthapuram, Kerala,<br />
-                  India - 695009
+                <span className="font-serif font-bold uppercase tracking-wider text-[9px] text-luxury-gold">{cmsData?.addressTitle || "Atelier Address"}</span>
+                <span className="leading-relaxed text-luxury-charcoal/70 whitespace-pre-line">
+                  {cmsData?.addressDetails ? cmsData.addressDetails[0].children[0].text : "TVM, Manacaud,\nThiruvananthapuram, Kerala,\nIndia - 695009"}
                 </span>
               </div>
             </div>
@@ -334,10 +359,9 @@ export const Contact: React.FC = () => {
             <div className="flex items-start space-x-3 text-xs">
               <Phone size={18} className="text-luxury-gold shrink-0 mt-0.5" />
               <div className="flex flex-col space-y-1">
-                <span className="font-serif font-bold uppercase tracking-wider text-[9px] text-luxury-gold">Business Hours</span>
-                <span className="leading-relaxed text-luxury-charcoal/70">
-                  Monday – Saturday<br />
-                  09:00 AM – 07:00 PM IST
+                <span className="font-serif font-bold uppercase tracking-wider text-[9px] text-luxury-gold">{cmsData?.hoursTitle || "Business Hours"}</span>
+                <span className="leading-relaxed text-luxury-charcoal/70 whitespace-pre-line">
+                  {cmsData?.hoursDetails ? cmsData.hoursDetails[0].children[0].text : "Monday – Saturday\n09:00 AM – 07:00 PM IST"}
                 </span>
               </div>
             </div>

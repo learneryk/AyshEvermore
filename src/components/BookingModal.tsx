@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Send, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { client } from '../sanityClient';
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -21,27 +22,46 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, eve
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
+  const defaultServices = [
+    'Wedding Day Management',
+    'Proposal Planning',
+    'Surprise Date Setups',
+    'Birthday & Milestone Celebrations',
+    'Corporate Events',
+    'Décor & Styling',
+    'Photography & Videography',
+    'Catering Services',
+    'Entertainment & Activities',
+    'Home Décor',
+    'Custom Experiences'
+  ];
+  
+  const [servicesList, setServicesList] = useState<string[]>(defaultServices);
+
+  useEffect(() => {
+    const query = `*[_type == "siteSettings"][0]`;
+    client.fetch(query).then(data => {
+      if (data?.servicesList) setServicesList(data.servicesList);
+    }).catch(console.error);
+    
+    const sub = client.listen(query).subscribe(update => {
+      if (update.result?.servicesList) setServicesList(update.result.servicesList);
+    });
+    return () => sub.unsubscribe();
+  }, []);
+
+  const eventTypes = servicesList.map(s => ({
+    value: s.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/(^_|_$)/g, ''),
+    label: s
+  }));
+
   useEffect(() => {
     if (eventType) {
       setFormData((prev) => ({ ...prev, eventType }));
+    } else if (eventTypes.length > 0 && formData.eventType === 'proposal') {
+      setFormData((prev) => ({ ...prev, eventType: eventTypes[0].value }));
     }
-  }, [eventType]);
-
-  const eventTypes = [
-    { value: 'proposal', label: 'Proposal' },
-    { value: 'wedding', label: 'Wedding' },
-    { value: 'engagement', label: 'Engagement' },
-    { value: 'birthday', label: 'Birthday' },
-    { value: 'anniversary', label: 'Anniversary' },
-    { value: 'romantic_date', label: 'Romantic Date' },
-    { value: 'baby_shower', label: 'Baby Shower' },
-    { value: 'housewarming', label: 'Housewarming' },
-    { value: 'corporate', label: 'Corporate Event' },
-    { value: 'private_celebration', label: 'Private Celebration' },
-    { value: 'surprise_event', label: 'Surprise Event' },
-    { value: 'festive', label: 'Festive Event (Onam, Eid, Christmas, etc.)' },
-    { value: 'custom', label: 'Custom Experience' },
-  ];
+  }, [eventType, eventTypes.length]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;

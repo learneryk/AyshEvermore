@@ -1,18 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SectionHeader } from '../components/SectionHeader';
 import { X, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { client } from '../sanityClient';
+import { createImageUrlBuilder } from '@sanity/image-url';
 import proposalHero from '../assets/proposal_hero.jpg';
 import weddingGold from '../assets/wedding_gold.jpg';
 import birthdayLuxury from '../assets/birthday_luxury.jpg';
 import corporateGala from '../assets/corporate_gala.jpg';
 import surpriseGarden from '../assets/surprise_garden.jpg';
 
+const builder = createImageUrlBuilder(client);
+function urlFor(source: any) {
+  return builder.image(source);
+}
+
 export const Gallery: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState('all');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [showAll, setShowAll] = useState(false);
 
-  const filters = [
+  const [cmsData, setCmsData] = useState<any>(null);
+  const [categories, setCategories] = useState<any[]>([]);
+
+  useEffect(() => {
+    const pageQuery = `*[_type == "galleryPage"][0]`;
+    const catQuery = `*[_type == "galleryCategory"] | order(_createdAt asc)`;
+
+    Promise.all([
+      client.fetch(pageQuery),
+      client.fetch(catQuery)
+    ]).then(([pageData, catData]) => {
+      setCmsData(pageData);
+      setCategories(catData);
+    }).catch(console.error);
+
+    const pageSub = client.listen(pageQuery).subscribe((update) => {
+      if (update.result) setCmsData(update.result);
+      else client.fetch(pageQuery).then(setCmsData);
+    });
+
+    const catSub = client.listen(catQuery).subscribe(() => {
+      client.fetch(catQuery).then(setCategories);
+    });
+
+    return () => {
+      pageSub.unsubscribe();
+      catSub.unsubscribe();
+    };
+  }, []);
+
+  const defaultFilters = [
     { name: 'All', slug: 'all' },
     { name: 'Proposals', slug: 'proposals' },
     { name: 'Weddings', slug: 'weddings' },
@@ -21,21 +59,56 @@ export const Gallery: React.FC = () => {
     { name: 'Surprises', slug: 'surprises' },
   ];
 
-  const galleryItems = [
-    { id: 1, image: proposalHero, category: 'proposals', title: 'Garden Midnight Proposal' },
-    { id: 2, image: weddingGold, category: 'weddings', title: 'Sunset Banquet Reception' },
-    { id: 3, image: birthdayLuxury, category: 'celebrations', title: 'Champagne Anniversary Dinner' },
-    { id: 4, image: corporateGala, category: 'corporate', title: 'Annual Corporate Stage' },
-    { id: 5, image: surpriseGarden, category: 'surprises', title: 'Lantern Path Surprise Setup' },
-    // Reuses for gallery grid thickness
-    { id: 6, image: proposalHero, category: 'surprises', title: 'Stealth Romantic Setup' },
-    { id: 7, image: weddingGold, category: 'proposals', title: 'Sea-Facing Beach Proposal' },
-    { id: 8, image: birthdayLuxury, category: 'celebrations', title: 'Luxe Balloon Birthday Arch' },
+  const filters = [
+    { name: 'All', slug: 'all' },
+    ...categories.map(c => ({ name: c.name || 'Unnamed', slug: c.slug?.current || 'unknown' }))
   ];
+  if (filters.length === 1) {
+    filters.push(...defaultFilters.slice(1));
+  }
+
+  const defaultGalleryItems = [
+    { id: '1', image: proposalHero, category: 'Proposals', slug: 'proposals', title: 'Garden Midnight Proposal' },
+    { id: '2', image: weddingGold, category: 'Weddings', slug: 'weddings', title: 'Sunset Banquet Reception' },
+    { id: '3', image: birthdayLuxury, category: 'Celebrations', slug: 'celebrations', title: 'Champagne Anniversary Dinner' },
+    { id: '4', image: corporateGala, category: 'Corporate', slug: 'corporate', title: 'Annual Corporate Stage' },
+    { id: '5', image: surpriseGarden, category: 'Surprises', slug: 'surprises', title: 'Lantern Path Surprise Setup' },
+    { id: '6', image: proposalHero, category: 'Surprises', slug: 'surprises', title: 'Stealth Romantic Setup' },
+    { id: '7', image: weddingGold, category: 'Proposals', slug: 'proposals', title: 'Sea-Facing Beach Proposal' },
+    { id: '8', image: birthdayLuxury, category: 'Celebrations', slug: 'celebrations', title: 'Luxe Balloon Birthday Arch' },
+  ];
+
+  let galleryItems: any[] = [];
+  if (categories.length > 0 && categories.some(c => c.images?.length > 0)) {
+    categories.forEach(cat => {
+      if (cat.images) {
+        cat.images.forEach((img: any) => {
+          if (img.image) {
+            galleryItems.push({
+              id: img._key || Math.random().toString(),
+              image: urlFor(img.image).url(),
+              category: cat.name || 'Unnamed',
+              slug: cat.slug?.current || 'unknown',
+              title: img.title || 'Untitled'
+            });
+          }
+        });
+      }
+    });
+  } else {
+    galleryItems = defaultGalleryItems;
+  }
 
   const filteredItems = activeFilter === 'all'
     ? galleryItems
-    : galleryItems.filter(item => item.category === activeFilter);
+    : galleryItems.filter(item => item.slug === activeFilter);
+
+  const displayedFilters = showAll ? filters : filters.slice(0, 6);
+
+  const handleFilterChange = (slug: string) => {
+    setActiveFilter(slug);
+    setLightboxIndex(null);
+  };
 
   const handlePrev = () => {
     if (lightboxIndex === null) return;
@@ -52,24 +125,21 @@ export const Gallery: React.FC = () => {
       {/* Header */}
       <section className="max-w-7xl mx-auto px-6 md:px-12 mb-12 text-center">
         <SectionHeader
-          title="Atelier Gallery"
-          tagline="Memories materialized"
-          subtitle="Browse high-resolution photographs of our real events, styled and styled to perfection."
+          title={cmsData?.headerTitle || "Atelier Gallery"}
+          tagline={cmsData?.headerTagline || "Memories materialized"}
+          subtitle={cmsData?.headerSubtitle || "Browse high-resolution photographs of our real events, styled and styled to perfection."}
         />
       </section>
 
       {/* Filters (Select-None) */}
       <section className="max-w-7xl mx-auto px-6 md:px-12 mb-16 select-none">
         <div className="flex flex-wrap items-center justify-center gap-3 border-b border-luxury-gold/15 pb-4">
-          {filters.map((filter) => {
+          {displayedFilters.map((filter) => {
             const isActive = activeFilter === filter.slug;
             return (
               <button
                 key={filter.slug}
-                onClick={() => {
-                  setActiveFilter(filter.slug);
-                  setLightboxIndex(null);
-                }}
+                onClick={() => handleFilterChange(filter.slug)}
                 className={`font-serif text-[10px] md:text-xs uppercase tracking-widest px-5 py-2.5 rounded transition-all duration-300 border ${
                   isActive
                     ? 'bg-luxury-gold text-luxury-charcoal border-luxury-gold'
@@ -80,6 +150,14 @@ export const Gallery: React.FC = () => {
               </button>
             );
           })}
+          {filters.length > 6 && (
+            <button
+              onClick={() => setShowAll(!showAll)}
+              className="font-serif text-[10px] md:text-xs uppercase tracking-widest px-5 py-2.5 rounded transition-all duration-300 border bg-transparent text-luxury-charcoal/60 border-luxury-gold/20 hover:border-luxury-gold/50"
+            >
+              {showAll ? 'Less Categories' : 'More Categories...'}
+            </button>
+          )}
         </div>
       </section>
 
@@ -113,11 +191,11 @@ export const Gallery: React.FC = () => {
                       <span className="font-serif text-[8px] uppercase tracking-widest text-luxury-gold">
                         {item.category}
                       </span>
-                      <h4 className="font-serif text-xs font-semibold uppercase tracking-wider">
+                      <h4 className="font-serif text-xs font-semibold uppercase tracking-wider line-clamp-2">
                         {item.title}
                       </h4>
                     </div>
-                    <Maximize2 size={16} className="text-luxury-gold" />
+                    <Maximize2 size={16} className="text-luxury-gold shrink-0 ml-4" />
                   </div>
                 </div>
               </motion.div>
